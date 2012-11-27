@@ -1,0 +1,15 @@
+This package contains code useful for analysis of far-UV spectra taken
+with the Cosmic Origins Spectrograph (COS) in the Hubble Space
+Telescope. It allows fast convolution of synthetic spectra with the
+non-gaussian COS line spread function required for line fitting, for
+the G130M, G160M and all the near UV gratings.  It also includes
+utilities for inspecting the data reduced by the COS pipeline, and for
+generating a wavelength-dependent line spread function for use with
+VPFIT (http://www.ast.cam.ac.uk/~rfc/vpfit.html).
+
+To install, you must have Cython (http://www.cython.org/) installed,
+and then do
+
+  python setup.py build_ext --inplace
+
+
