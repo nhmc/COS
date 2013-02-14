@@ -4,6 +4,7 @@
 from barak.interp import interp_spline
 from barak.spec import find_wa_edges
 from barak.io import readtxt, writetxt
+from barak.utilities import between
 
 import pyfits
 import numpy as np
@@ -117,13 +118,13 @@ def rebinx1d(sp, wa_new):
         # New wavelength scale extends lower than the old scale.
         # Find the first rebinned pixel that overlaps with the old spectrum.
         while edges_old[0] > edges_new[j + 1]:
-            fl_new[j] = np.nan
-            er_new[j] = np.nan
-            dq_new[j] = np.nan
-            dq_wgt_new[j] = np.nan
-            gr_new[j] = np.nan
-            net_new[j] = np.nan
-            bg_new[j] = np.nan
+            fl_new[j] = 0.0
+            er_new[j] = 0.0
+            dq_new[j] = 128
+            dq_wgt_new[j] = 0.0
+            gr_new[j] = 0.0
+            net_new[j] = 0.0
+            bg_new[j] = 0.0
             j += 1
         j -= 1
     lo_old = edges_old[i]          # Lower edge of contr. pixel in old scale.
@@ -170,13 +171,13 @@ def rebinx1d(sp, wa_new):
                 net_new[j] = dn / npix
                 bg_new[j] = db / npix
             else:
-                fl_new[j] = np.nan
-                er_new[j] = np.nan
-                dq_new[j] = np.nan
-                dq_wgt_new[j] = np.nan
-                gr_new[j] = np.nan
-                net_new[j] = np.nan
-                bg_new[j] = np.nan
+                fl_new[j] = 0.0
+                er_new[j] = 0.0
+                dq_new[j] = 128
+                dq_wgt_new[j] = 0.0
+                gr_new[j] = 0.0
+                net_new[j] = 0.0
+                bg_new[j] = 0.0
             df = 0.0
             de2 = 0.0
             ddq = 0.0
@@ -254,8 +255,10 @@ def writeLSF_vpfit(wa, dw):
     outname = 'LSF/LSF_%.1f.txt' % wa
     if wa < 1450:
         lsf, _ = readLSF('G130M', dw)
-    else:
+    elif between(wa, 1450, 1800):
         lsf, _ = readLSF('G160M', dw)
+    else:
+        lsf, _ = readLSF('NUV', dw)
 
     wavs = [float(n[1:]) for n in lsf.dtype.names[1:]]
     lsf1 = np.array([lsf[n] for n in lsf.dtype.names[1:]])

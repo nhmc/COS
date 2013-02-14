@@ -45,7 +45,7 @@ def convolve_with_COS_FOS(
 
     ind = wa.searchsorted(1800)
     dw = np.median(np.diff(wa[:ind]))
-    print np.diff(wa)[0], np.diff(wa)[-1]
+    #print np.diff(wa)[0], np.diff(wa)[-1]
     print 'COS FUV pixel width %.4f Ang' % dw
 
     profile,_ = readLSF('G130M', dw)
@@ -60,7 +60,7 @@ def convolve_with_COS_FOS(
     g160uplim = [1475, 1525, 1575, 1625, 1675, 1725, 1800]
 
     n_g130m = len(g130m[0])
-    n_g160m = len(g160m[0])    
+    n_g160m = len(g160m[0])
 
     N = len(a)
 
@@ -100,7 +100,7 @@ def convolve_with_COS_FOS(
     # G230L
     if use_COS_nuv and N - n > 5:
         dw = np.median(np.diff(wa[n:]))
-        print 'new COS NUV pixel width %.4f Ang' % dw
+        print 'New COS NUV pixel width %.4f Ang' % dw
         print '(from %.6f Ang)' % (wa[n])
         profile, _ = readLSF('NUV', dw)
         keys = 'w1700 w1800 w1900 w2000 w2100 w2200 w2300 w2400 w2500 w2600 \
@@ -109,7 +109,7 @@ def convolve_with_COS_FOS(
         nuv_uplim = [1750.5, 1850.5, 1950.5, 2050.5, 2150.5, 2250.5, 2350.5,
                      2450.5, 2550.5, 2650.5, 2750.5, 2850.5, 2950.5, 3050.5,
                      3150.5, 3200.5]
-        
+
         n_nuv = len(nuv[0])
 
         for k in range(len(nuv)):
@@ -129,7 +129,7 @@ def convolve_with_COS_FOS(
                 n += 1
     else:
         # use FOS resolution
-        while n < N and wa[n] < 2300:        
+        while n < N and wa[n] < 2300:
             dw = wa[n] - wa[n-1]
             sigma = 1.39 / 2.35
             # determine how far away we need to go from the Gaussian
@@ -144,11 +144,11 @@ def convolve_with_COS_FOS(
                 wval = gaussian(-m*dw, sigma)
                 result += wval*a[i]
                 wtot += wval
-     
+
             results[n] = result / wtot
             n += 1
-     
-        while n < N and wa[n] < 3300:        
+
+        while n < N and wa[n] < 3300:
             sigma = 1.97 / 2.35
             # determine how far away we need to go from the Gaussian
             # centre.
@@ -162,7 +162,7 @@ def convolve_with_COS_FOS(
                 wval = gaussian(-m*dw, sigma)
                 result += wval*a[i]
                 wtot += wval
-     
+
             results[n] = result / wtot
             n += 1
 
